@@ -1,35 +1,32 @@
 import requests
 import argparse
 
-
 def main(args):
     # Retrieve environment variables
     GEMINI_API_KEY = ""
+
     GEMINI_URL = (
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
     )
 
-    if not GEMINI_API_KEY or not GEMINI_URL:
-        print("Environment variables for GEMINI_API_KEY and GEMINI_URL are not set.")
+    # Prepare the API URL
+    api_url = f"{GEMINI_URL}?key={GEMINI_API_KEY}"
+    headers = {"Content-Type": "application/json"}
+    # Define your request payload, adjust according to the API's expected format
+    payload = {"contents": [{"parts": [{"text": args.text}]}]}
+
+    # Make the POST request
+    response = requests.post(api_url, headers=headers, json=payload)
+
+    if response.status_code == 200:
+        # If request is successful, process the response
+        data = response.json()
+        print(data["candidates"][0]["content"]["parts"][0]["text"])
+
     else:
-        # Prepare the API URL
-        api_url = f"{GEMINI_URL}?key={GEMINI_API_KEY}"
-        headers = {"Content-Type": "application/json"}
-        # Define your request payload, adjust according to the API's expected format
-        payload = {"contents": [{"parts": [{"text": args.text}]}]}
-
-        # Make the POST request
-        response = requests.post(api_url, headers=headers, json=payload)
-
-        if response.status_code == 200:
-            # If request is successful, process the response
-            data = response.json()
-            print(data["candidates"][0]["content"]["parts"][0]["text"])
-
-        else:
-            # If there was an error, print the error
-            print(f"Error: {response.status_code}")
-            print(response.text)
+        # If there was an error, print the error
+        print(f"Error: {response.status_code}")
+        print(response.text)
 
 
 if __name__ == "__main__":

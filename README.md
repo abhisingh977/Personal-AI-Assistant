@@ -10,7 +10,6 @@ If the link is dead by the time you open this link google: Gemini Api key and th
 Go to the end of file and add this to the file
 ```
 GEMINI_API_KEY='key-you-got-from-google-gemini' 
-GEMINI_URL='https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
 ```
 close the vim while  saving the file using :wq
 
